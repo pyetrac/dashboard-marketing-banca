@@ -2,96 +2,417 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard BI Marketing</title>
+    <title>Marketing BI - Dashboard Analítico</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px;}
-        .container { max-width: 1100px; margin: auto; }
-        .card {
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 4px 14px #0001;
-            margin-bottom: 32px;
-            padding: 28px 22px 22px 22px;
-            display: flex;
-            align-items: center;
-            gap: 32px;
+        body { 
+            font-family: 'Montserrat', Arial, sans-serif; 
+            background: #f4f7fa; 
+            margin: 0; 
         }
-        .card img { width: 340px; border-radius: 10px; box-shadow: 0 2px 6px #0001;}
-        .card-content { flex: 1; }
-        h2 { margin-top: 0; color: #243468;}
-        .insight { color: #333; font-size: 17px; margin: 16px 0 8px;}
-        .action { color: #297373; font-weight: bold;}
+        .logo {
+            display: flex; 
+            align-items: center; 
+            background: #243468; 
+            color: #fff; 
+            padding: 22px 40px 18px 40px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 1px 10px #0001;
+        }
+        .logo span {
+            margin-left: 10px;
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #a3b7e2;
+        }
+        /* KPIs executivos */
+        .kpis-top {
+            display:flex; 
+            gap:36px; 
+            justify-content:center; 
+            background:#fff; 
+            padding:24px 0 18px 0; 
+            box-shadow:0 1px 10px #0001;
+        }
+        .kpi-card {
+            background:#f6fafd; 
+            border-radius:12px; 
+            padding:20px 34px 14px 34px; 
+            text-align:center; 
+            box-shadow:0 2px 8px #0000;
+        }
+        .kpi-value { font-size:1.9rem; font-weight:700;}
+        .kpi-label { color:#243468; font-size:1.08rem; font-weight:600;}
+        .tabs { 
+            display: flex; 
+            background: #e7ecf2; 
+            border-bottom: 1px solid #dde2ea; 
+            box-shadow: 0 2px 6px #0001;
+        }
+        .tab-btn {
+            padding: 16px 40px;
+            cursor: pointer;
+            background: none;
+            color: #243468;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: background 0.2s, border-bottom 0.2s, color 0.2s;
+        }
+        .tab-btn.active, .tab-btn:hover { 
+            background: #fff; 
+            border-bottom: 3px solid #3eb6c1;
+            color: #3eb6c1;
+        }
+        .tab-content { 
+            display: none; 
+            padding: 48px 64px; 
+            background: #fff; 
+            border-radius: 0 0 16px 16px; 
+            box-shadow: 0 6px 24px #0001;
+            min-height: 380px;
+        }
+        .tab-content.active { display: block; }
+        h2 { 
+            color: #243468; 
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .insight { 
+            margin-top: 24px; 
+            color: #333; 
+            font-size: 1.13rem;
+            background: #f6fafd;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px #0000;
+        }
+        .action { 
+            color: #2bb2a3; 
+            margin-top: 14px; 
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        textarea { 
+            border-radius: 10px; 
+            border: 1px solid #c2cbe2; 
+            padding: 10px; 
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 16px;
+            background: #f4f7fa;
+        }
+        ul { margin-left: 18px;}
+        a { 
+            color: #3eb6c1; 
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        canvas { 
+            max-width: 500px; 
+            margin-bottom: 28px; 
+            background: #fafbfc;
+            border-radius: 8px;
+            box-shadow: 0 3px 16px #0001;
+        }
+        /* Card recomendação BI */
+        .card-birec {
+            background:#fffbe8; 
+            border-left: 7px solid #f7c873; 
+            border-radius:12px; 
+            padding:20px 32px; 
+            margin:32px 0 16px 0; 
+            box-shadow:0 2px 8px #0001;
+        }
+        .card-birec-title {
+            color:#e9966a; 
+            font-weight:700; 
+            font-size:1.18rem; 
+            margin-bottom:6px;
+        }
+        .card-birec-text {
+            color:#243468; 
+            font-size:1.08rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard Dinâmico de Segmentação de Clientes</h1>
-
-        <!-- Card 1: Engajamento Médio por Campanha e Segmento -->
-        <div class="card">
-            <img src="EngajamentoMedio.campanha.jpg" alt="Engajamento Médio por Campanha e Segmento">
-            <div class="card-content">
-                <h2>Engajamento por Campanha e Segmento</h2>
-                <div class="insight">
-                    Clientes Fiéis e de Alto Valor têm maior engajamento em campanhas de Black Friday e Aniversário.<br>
-                    Inativos apresentam pouco engajamento em todas as campanhas.
-                </div>
-                <div class="action">Priorizar campanhas sazonais para segmentos engajados e criar ações de reativação específicas para inativos.</div>
-            </div>
-        </div>
-
-        <!-- Card 2: Distribuição das Interações por Canal -->
-        <div class="card">
-            <img src="distribuicaoporcanal.jog.png" alt="Distribuição das Interações por Canal">
-            <div class="card-content">
-                <h2>Distribuição das Interações por Canal</h2>
-                <div class="insight">
-                    WhatsApp e Telefone concentram grande parte das interações para todos os segmentos, com destaque para clientes fiéis.<br>
-                    E-mail tem peso maior entre inativos.
-                </div>
-                <div class="action">Diversificar canais, mas fortalecer E-mail para reativar clientes inativos.</div>
-            </div>
-        </div>
-
-        <!-- Card 3: Eficácia por Canal e Segmento -->
-        <div class="card">
-            <img src="conversaoporcanal.jpg" alt="Eficácia por Canal e Segmento">
-            <div class="card-content">
-                <h2>Eficácia por Canal e Segmento</h2>
-                <div class="insight">
-                    Canais digitais como E-mail, App e WhatsApp atingem altas taxas de interação para Fiéis e Alto Valor.<br>
-                    Para inativos, E-mail e SMS ainda são os melhores, mas com eficácia reduzida.
-                </div>
-                <div class="action">Manter canais digitais para ativos, testar abordagens diferentes com SMS/E-mail para inativos.</div>
-            </div>
-        </div>
-
-        <!-- Card 4: Mapa de Calor - Engajamento por Campanha -->
-        <div class="card">
-            <img src="mapadecalor.campanha.jpg" alt="Mapa de Calor Engajamento Campanha">
-            <div class="card-content">
-                <h2>Mapa de Calor: Engajamento por Campanha</h2>
-                <div class="insight">
-                    Clientes Fiéis engajam mais em campanhas recorrentes.<br>
-                    Inativos apresentam engajamento muito baixo em todas as campanhas analisadas.
-                </div>
-                <div class="action">Focar em campanhas personalizadas para cada segmento, com atenção especial ao baixo engajamento dos inativos.</div>
-            </div>
-        </div>
-
-        <!-- Card 5: Relação entre Preferência e Eficácia dos Canais -->
-        <div class="card">
-            <img src="relacaodecanal.interacaoXconversao.jpg" alt="Preferência vs Eficácia dos Canais">
-            <div class="card-content">
-                <h2>Preferência x Eficácia dos Canais</h2>
-                <div class="insight">
-                    Clientes Fiéis e de Alto Valor preferem canais digitais e apresentam maior conversão nestes meios.<br>
-                    Inativos têm baixa preferência e eficácia em todos os canais.
-                </div>
-                <div class="action">Priorizar ações digitais para segmentos ativos e redesenhar a jornada de reativação dos inativos.</div>
-            </div>
-        </div>
-
+    <!-- LOGO fictícia -->
+    <div class="logo">
+        <span style="font-size:2.2rem; color:#3eb6c1; margin-right:10px;">&#128200;</span>
+        Marketing BI <span>dashboard analítico</span>
     </div>
+    <!-- KPIs executivos -->
+    <div class="kpis-top">
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:#3eb6c1;">900</div>
+            <div class="kpi-label">Total de Clientes</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:#e9966a;">R$ 560</div>
+            <div class="kpi-label">Ticket Médio</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:#243468;">12,4</div>
+            <div class="kpi-label">Frequência/ano</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:#3eb6c1;">37%</div>
+            <div class="kpi-label">% Fiéis</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value" style="color:#243468;">29%</div>
+            <div class="kpi-label">% Inativos</div>
+        </div>
+    </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab(0)">Perfil dos Clientes</button>
+        <button class="tab-btn" onclick="showTab(1)">Canais Eficazes</button>
+        <button class="tab-btn" onclick="showTab(2)">Campanhas Recomendadas</button>
+        <button class="tab-btn" onclick="showTab(3)">Executar & Monitorar</button>
+    </div>
+
+    <!-- Aba 1: Perfil dos Clientes -->
+    <div class="tab-content active">
+        <h2>Perfil dos Clientes</h2>
+        <label for="segmentoSelect" style="font-size:1.1rem; margin-right:10px;">Escolha o segmento:</label>
+        <select id="segmentoSelect" style="font-size:1rem; padding:5px 10px; border-radius:6px; border:1px solid #c2cbe2;">
+            <option value="todos">Todos</option>
+            <option value="Clientes Fiéis">Clientes Fiéis</option>
+            <option value="Alto Valor">Alto Valor</option>
+            <option value="Inativos">Inativos</option>
+        </select>
+        <button onclick="exportarGrafico()" style="margin-left:24px; background:#3eb6c1; color:#fff; border:none; border-radius:6px; padding:6px 16px; font-size:1rem; cursor:pointer;">
+            Exportar Gráfico
+        </button>
+        <br><br>
+        <canvas id="graficoSegmentos" width="480" height="320"></canvas>
+        <script>
+        // Dados simulados
+        const dadosSegmentos = {
+            labels: ['Clientes Fiéis', 'Alto Valor', 'Inativos'],
+            data: [300, 300, 300]
+        };
+        let graficoSegmentos;
+        function criarGraficoSegmentos(dados, labels) {
+            const ctx = document.getElementById('graficoSegmentos').getContext('2d');
+            if (graficoSegmentos) graficoSegmentos.destroy();
+            graficoSegmentos = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nº de Clientes',
+                        data: dados,
+                        backgroundColor: ['#3eb6c1', '#243468', '#e9966a']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Distribuição dos Segmentos' }
+                    }
+                }
+            });
+        }
+        document.getElementById('segmentoSelect').addEventListener('change', function() {
+            const val = this.value;
+            if(val === 'todos'){
+                criarGraficoSegmentos(dadosSegmentos.data, dadosSegmentos.labels);
+            } else {
+                const idx = dadosSegmentos.labels.indexOf(val);
+                criarGraficoSegmentos([dadosSegmentos.data[idx]], [dadosSegmentos.labels[idx]]);
+            }
+        });
+        function exportarGrafico(){
+            const link = document.createElement('a');
+            link.download = 'grafico_segmentos.png';
+            link.href = graficoSegmentos.toBase64Image();
+            link.click();
+        }
+        criarGraficoSegmentos(dadosSegmentos.data, dadosSegmentos.labels);
+        </script>
+        <div class="insight">
+            Conheça seus principais públicos. Use esse painel para identificar o tamanho de cada grupo, ticket médio, frequência de compras e onde concentrar suas ações.
+            <ul>
+                <li><b>Clientes Fiéis:</b> Compram com frequência, ticket moderado, preferem canais digitais.</li>
+                <li><b>Alto Valor:</b> Menor quantidade, maior gasto por compra, engajados em campanhas VIP.</li>
+                <li><b>Inativos:</b> Grande volume, baixa compra, difícil de reativar.</li>
+            </ul>
+        </div>
+        <div class="action">DICA: Segmente sua comunicação e priorize ações para Alto Valor e reativação de Inativos.</div>
+        <!-- Card de recomendação automática -->
+        <div class="card-birec">
+            <div class="card-birec-title">
+                Sugestão do BI
+                <span style="font-size:1.3rem; margin-left:8px;">💡</span>
+            </div>
+            <div class="card-birec-text">
+                <b>Dica automática:</b> <br>
+                Concentre esforços em campanhas exclusivas para clientes de alto valor e mantenha comunicações recorrentes via WhatsApp com clientes fiéis. Para inativos, aposte em e-mails com ofertas de reativação e personalize a abordagem conforme o histórico de campanhas favoritas.
+            </div>
+        </div>
+    </div>
+
+    <!-- Aba 2: Canais Eficazes -->
+    <div class="tab-content">
+        <h2>Canais mais eficazes por segmento</h2>
+        <canvas id="graficoCanais" width="480" height="320"></canvas>
+        <script>
+        const ctx2 = document.getElementById('graficoCanais').getContext('2d');
+        const graficoCanais = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['WhatsApp', 'E-mail', 'App', 'Telefone', 'SMS'],
+                datasets: [
+                    {
+                        label: 'Fiéis',
+                        data: [90, 30, 80, 20, 10],
+                        backgroundColor: '#3eb6c1'
+                    },
+                    {
+                        label: 'Alto Valor',
+                        data: [70, 25, 60, 50, 5],
+                        backgroundColor: '#243468'
+                    },
+                    {
+                        label: 'Inativos',
+                        data: [20, 55, 10, 5, 35],
+                        backgroundColor: '#e9966a'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Eficácia dos Canais por Segmento' }
+                }
+            }
+        });
+        </script>
+        <div class="insight">
+            Otimize a comunicação: visualize quais canais trazem mais resultado em cada grupo de clientes.
+            <ul>
+                <li><b>Clientes Fiéis:</b> WhatsApp e App têm as maiores taxas de resposta.</li>
+                <li><b>Alto Valor:</b> Responde melhor por canais diretos (WhatsApp, telefone).</li>
+                <li><b>Inativos:</b> E-mail ainda apresenta alguma eficácia para reativação.</li>
+            </ul>
+        </div>
+        <div class="action">AJA: Planeje campanhas multicanal, focando nos canais mais eficazes para cada segmento.</div>
+    </div>
+
+    <!-- Aba 3: Campanhas Recomendadas -->
+    <div class="tab-content">
+        <h2>Campanhas mais engajadoras</h2>
+        <canvas id="graficoCampanhas" width="480" height="320"></canvas>
+        <script>
+        const ctx3 = document.getElementById('graficoCampanhas').getContext('2d');
+        const graficoCampanhas = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['Black Friday', 'Aniversário', 'Natal', 'Dia das Mães', 'Liquidação'],
+                datasets: [
+                    {
+                        label: 'Fiéis',
+                        data: [70, 65, 40, 30, 20],
+                        backgroundColor: '#3eb6c1'
+                    },
+                    {
+                        label: 'Alto Valor',
+                        data: [80, 55, 30, 20, 10],
+                        backgroundColor: '#243468'
+                    },
+                    {
+                        label: 'Inativos',
+                        data: [10, 15, 20, 8, 5],
+                        backgroundColor: '#e9966a'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Engajamento em Campanhas por Segmento' }
+                }
+            }
+        });
+        </script>
+        <div class="insight">
+            Descubra as campanhas favoritas de cada segmento. Veja quais temas e datas promocionais realmente engajam os clientes e aumentam a conversão.
+            <ul>
+                <li><b>Clientes Fiéis:</b> Campanhas de Black Friday e aniversário têm ótimo desempenho.</li>
+                <li><b>Alto Valor:</b> Respondem melhor a ofertas exclusivas e campanhas personalizadas.</li>
+                <li><b>Inativos:</b> Ações sazonais ainda geram algum engajamento, mas exigem abordagem diferenciada.</li>
+            </ul>
+        </div>
+        <div class="action">PLANEJE: Programe campanhas específicas conforme o perfil e aumente a efetividade das ações.</div>
+    </div>
+
+    <!-- Aba 4: Executar & Monitorar -->
+    <div class="tab-content">
+        <h2>Execute e monitore sua estratégia</h2>
+        <canvas id="graficoConversao" width="480" height="320"></canvas>
+        <script>
+        const ctx4 = document.getElementById('graficoConversao').getContext('2d');
+        const graficoConversao = new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: ['WhatsApp', 'E-mail', 'App', 'Telefone', 'SMS'],
+                datasets: [
+                    {
+                        label: 'Fiéis',
+                        data: [70, 40, 60, 20, 8],
+                        backgroundColor: '#3eb6c1'
+                    },
+                    {
+                        label: 'Alto Valor',
+                        data: [60, 35, 40, 25, 12],
+                        backgroundColor: '#243468'
+                    },
+                    {
+                        label: 'Inativos',
+                        data: [15, 30, 8, 3, 18],
+                        backgroundColor: '#e9966a'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Conversão por Canal e Segmento' }
+                }
+            }
+        });
+        </script>
+        <div class="insight">
+            Acesse os dados completos para análises adicionais, confira recomendações automáticas e registre resultados para ajustes futuros.
+            <ul>
+                <li><b>Baixe os dados:</b> <a href="dados_clientes_completos_v2.csv" download>Clique aqui para baixar CSV</a></li>
+                <li><b>Recomendações:</b> Use as sugestões para cada grupo, mas personalize conforme o contexto da sua empresa.</li>
+                <li><b>Monitore:</b> Mantenha registro das ações tomadas e compare os resultados periodicamente.</li>
+            </ul>
+        </div>
+        <textarea rows="6" placeholder="Observações do analista: anote aqui resultados, aprendizados ou próximas ações..."></textarea>
+    </div>
+
+    <script>
+        function showTab(idx) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const btns = document.querySelectorAll('.tab-btn');
+            tabs.forEach((tab, i) => tab.classList.toggle('active', i === idx));
+            btns.forEach((btn, i) => btn.classList.toggle('active', i === idx));
+        }
+    </script>
 </body>
 </html>
