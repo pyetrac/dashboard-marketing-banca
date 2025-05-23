@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard BI Marketing</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px;}
+        .container { max-width: 1100px; margin: auto; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px #0001;
+            margin-bottom: 32px;
+            padding: 28px 22px 22px 22px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .card img { width: 340px; border-radius: 10px; box-shadow: 0 2px 6px #0001;}
+        .card-content { flex: 1; }
+        h2 { margin-top: 0; color: #243468;}
+        .insight { color: #333; font-size: 17px; margin: 16px 0 8px;}
+        .action { color: #297373; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Dinâmico de Segmentação de Clientes</h1>
+
+        <!-- Card 1: Engajamento Médio por Campanha e Segmento -->
+        <div class="card">
+            <img src="EngajamentoMedio.campanha.jpg" alt="Engajamento Médio por Campanha e Segmento">
+            <div class="card-content">
+                <h2>Engajamento por Campanha e Segmento</h2>
+                <div class="insight">
+                    Clientes Fiéis e de Alto Valor têm maior engajamento em campanhas de Black Friday e Aniversário.<br>
+                    Inativos apresentam pouco engajamento em todas as campanhas.
+                </div>
+                <div class="action">Priorizar campanhas sazonais para segmentos engajados e criar ações de reativação específicas para inativos.</div>
+            </div>
+        </div>
+
+        <!-- Card 2: Distribuição das Interações por Canal -->
+        <div class="card">
+            <img src="distribuicaoporcanal.jog.png" alt="Distribuição das Interações por Canal">
+            <div class="card-content">
+                <h2>Distribuição das Interações por Canal</h2>
+                <div class="insight">
+                    WhatsApp e Telefone concentram grande parte das interações para todos os segmentos, com destaque para clientes fiéis.<br>
+                    E-mail tem peso maior entre inativos.
+                </div>
+                <div class="action">Diversificar canais, mas fortalecer E-mail para reativar clientes inativos.</div>
+            </div>
+        </div>
+
+        <!-- Card 3: Eficácia por Canal e Segmento -->
+        <div class="card">
+            <img src="conversaoporcanal.jpg" alt="Eficácia por Canal e Segmento">
+            <div class="card-content">
+                <h2>Eficácia por Canal e Segmento</h2>
+                <div class="insight">
+                    Canais digitais como E-mail, App e WhatsApp atingem altas taxas de interação para Fiéis e Alto Valor.<br>
+                    Para inativos, E-mail e SMS ainda são os melhores, mas com eficácia reduzida.
+                </div>
+                <div class="action">Manter canais digitais para ativos, testar abordagens diferentes com SMS/E-mail para inativos.</div>
+            </div>
+        </div>
+
+        <!-- Card 4: Mapa de Calor - Engajamento por Campanha -->
+        <div class="card">
+            <img src="mapadecalor.campanha.jpg" alt="Mapa de Calor Engajamento Campanha">
+            <div class="card-content">
+                <h2>Mapa de Calor: Engajamento por Campanha</h2>
+                <div class="insight">
+                    Clientes Fiéis engajam mais em campanhas recorrentes.<br>
+                    Inativos apresentam engajamento muito baixo em todas as campanhas analisadas.
+                </div>
+                <div class="action">Focar em campanhas personalizadas para cada segmento, com atenção especial ao baixo engajamento dos inativos.</div>
+            </div>
+        </div>
+
+        <!-- Card 5: Relação entre Preferência e Eficácia dos Canais -->
+        <div class="card">
+            <img src="relacaodecanal.interacaoXconversao.jpg" alt="Preferência vs Eficácia dos Canais">
+            <div class="card-content">
+                <h2>Preferência x Eficácia dos Canais</h2>
+                <div class="insight">
+                    Clientes Fiéis e de Alto Valor preferem canais digitais e apresentam maior conversão nestes meios.<br>
+                    Inativos têm baixa preferência e eficácia em todos os canais.
+                </div>
+                <div class="action">Priorizar ações digitais para segmentos ativos e redesenhar a jornada de reativação dos inativos.</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
